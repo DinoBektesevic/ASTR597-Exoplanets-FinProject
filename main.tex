@@ -34,16 +34,16 @@
 \setlength{\parskip}{0.05in}
 
 % Edit these as appropriate
-\newcommand\course{CSE 3500}
-\newcommand\hwnumber{1}                  % <-- homework number
-\newcommand\NetIDa{netid19823}           % <-- NetID of person #1
-\newcommand\NetIDb{netid12038}           % <-- NetID of person #2 (Comment this line out for problem sets)
+\newcommand\course{ASTR 597}
+\newcommand\hwnumber{2}                  % <-- homework number
+\newcommand\NetIDa{Dino}           % <-- NetID of person #1
+\newcommand\NetIDb{Bektesevic}           % <-- NetID of person #2 (Comment this line out for problem sets)
 
 \pagestyle{fancyplain}
 \headheight 35pt
 \lhead{\NetIDa}
 \lhead{\NetIDa\\\NetIDb}                 % <-- Comment this line out for problem sets (make sure you are person #1)
-\chead{\textbf{\Large Homework \hwnumber}}
+\chead{\Large Summary of meter-barrier problem.}
 \rhead{\course \\ \today}
 \lfoot{}
 \cfoot{}
@@ -51,52 +51,52 @@
 \headsep 1.5em
 
 \begin{document}
+\section*{Chosen papers on the topic}
 
-\section*{Problem 1}
-
-Answer to the problem goes here.
-
-\begin{enumerate}
-  \item
-   Problem 1 part 1 answer here.
-  \item
-    Problem 1 part 2 answer here.
-
-    Here is an example typesetting mathematics in \LaTeX
-\begin{equation*}
-    X(m,n) = \left\{\begin{array}{lr}
-        x(n), & \text{for } 0\leq n\leq 1\\
-        \frac{x(n-1)}{2}, & \text{for } 0\leq n\leq 1\\
-        \log_2 \left\lceil n \right\rceil \qquad & \text{for } 0\leq n\leq 1
-        \end{array}\right\} = xy
-\end{equation*}
-
-    \item Problem 1 part 3 answer here.
-
-    Here is an example of how you can typeset algorithms.
-    There are many packages to do this in \LaTeX.
-     
-    \lstset{caption={Caption for code}}
-    \lstset{label={lst:alg1}}
-     \begin{lstlisting}[style = Python]
-    from package import Class # Mesh required for..
-    
-    cinstance = Class.from_obj('class.obj')
-    cinstance.go()
-    \end{lstlisting}
-     
-  \item Problem 1 part 4 answer here.
-
-    Here is an example of how you can insert a figure.
-    \begin{figure}[!h]
-    \centering
-    \includegraphics[width=0.3\linewidth]{heidi.jpg}
-    \caption{Heidi attacked by a string.}
-    \end{figure}
-\end{enumerate}
+It's hard to determine which papers should be listed as primary focus when discussing a hot-topic that's been debates in depth over the last two decades. Certainly the chosen papers represent the main ideas currently being investigated in the field, but it is at least a matter of some discussion at least whether they are seminal or overarching enough to be the primary focus of this project (f.e. Youding and Goodman's streaming instability or nearly similar, but perhaps not general enough, idea of "turbulent concentration" by Cuzzi et al. (ApJ, 2001)). 
+\begin{itemize}
+    \item Aerodynamics of solid bodies in the solar nebula, Weidenschilling 1977, MNRAS
+    \item Rapid Coagulation of Porous Dust Aggregates outside the Snow Line: A Pathway to Succesful Icy Planetesimal Formation, Okuzumi et al., 2012, ApJ
+    \item Streaming Instabilities in Protoplanetary Disks, Youdin and Goodman 2005, ApJ
+\end{itemize}
 
 
-\section*{Problem 2}
-% Rest of the work...
+\section*{Summary and motivation of the final project.}
+
+The origins and creation of the Solar System has always been a topic of interest in Astronomy. The number of models proposed describing the possible dynamics of the formation are hard to count, but they all have had to deal with a similar underlying physical problem: the dynamics of dust in the protoplanetary disk. This dynamic has always been assumed rather simplistically, until recently at least, where planets formed via slow growth of orbiting dust by accretion or coagulation etc., offset by rates of fragmentation, destructive collisions and other negative-outcome scenarios in this context. Although quite logical and understandable these models have always faced several challenges, namely it is very difficult to coalesce dust which makes rates at which large planetesimals are created rather low and the timescales rather large. 
+
+Plotoplanetary disks consist mainly of gas and dust particles. In the classical picture the gas orbits around the central body partially supported by the gas pressure while the dust tends to orbit more on Keplerian-like orbits. Because of this additional supporting force exerted by pressure gas can orbit at a lower velocities compared to appropriate expected Keplerian orbit. Seeing as the dust orbits on a Keplerian-like orbit it must "plow" through the gas which causes a loss of momentum and consequently a slow drift inwards, towards the central body. Weidenschilling (MNRAS, 1977) examined two cases for dust-gas interaction in protoplanetary disks: 1) when the dust cross-section is smaller than the mean free path of the gas, so called Epstein regime, and 2) when the dust cross-section is larger than the mean free path of the gas, so called Stokes regime. Weidenschilling found that there is a strong correlation between the drift-speed and the particle size. He found that smaller dust particles are more strongly coupled to the gas and tend to follow its behaviour while the large particles, having larger mass and therefore being less decelerated in collisions, tend to plow through the gas unaffected. For all the particles in-between those two limits however there exists a varying drift-speed towards the central body, provided they don't coalesce or fragment. Weidenschilling finds that the largest drift speed is recovered for particles ~1m in size. But if the accretion rates are highly dependent on the colliding velocity and the rates of accretion are relatively slow, but we know 1m sized objects can only live for a short period in the protoplanetary due to their large drift-speeds, how do we coalesce bodies larger than that? Such bodies would then have to be formed very quickly, or there is something wrong with how we model successful collisions. This is the origin of the meter-barrier problem I want to cover in my final project.
+
+Since the proposition of the problem by Weidenschilling, there have been numerous attempts to resolve the discrepancy. Okuzumi et al., (ApJ, 2012) propose a potential solution for the problem for particles beyond the snowline. They assumed a much "fluffier" composition, a lower form filing factor for the body. This enabled them to coalesce bodies above the meter-barrier for two reasons: 1) bodies with a lower form filling factor are more resistant to collisional disruption and therefore more likely to coalesce and 2) such bodies are formed by coalescing of icy material, meaning such bodies would form at larger radii from the central body where the orbital speeds are smaller leading to more successful. Such results have gained popularity after the Rosetta and Deep Impact missions both of which indicated that bodies of the Solar System might generally have a significantly smaller form filling factors than originally assumed. Unfortunately the proposed model is not able to describe how this mechanism would work for more tightly packed silicon based material closer to the central object.
+
+Another approach involves relying on fast accretion mechanism that would be capable of accreating the body very quickly. Youdin and Goodman (ApJ, 2005) propose one such mechanism called streaming instability. Previously it was established that a common idea is that the gas moves at different velocity (~50m/s) than the dust particles, due to the fact gas is additionally supported by pressure and that collisions between single dust particles and gas causes the dust to drift inwards. Instead of focusing on collisional outcomes of single dust particle and gas Youding and Goodman focused on collisional outcomes of gas and clumps of dust particles. Dust clusters increase the gas acceleration, since a more massive body colliding with a small gas molecule imparts a larger momentum onto the smaller particle, thus accelerating the orbital velocity of surrounding gas and decreasing the friction felt by the dust clump. The net result is that the drift speed of the clump is less than that of a single dust particle. Dust particles that continue to drift inwards at nominal speed catch up to the clump and increase its mass, further reducing its drift speed. Although described very corpuscularly above, these dust clumps need not be actual accreted and bound together clumps of dust particles (with respect to previous text: how would these have formed?) but local overdensities of solid matter that could have originated from some small local statistical fluctuation of density and is bound together by self-gravitational effects. 
+
+
+   %- Other particles drifting inward at the nominal speed catch up to the clump, enhance the local over-density of solids, and further decelerate the radial drift of the clump. Thus a positive-feedback loop is established and large bodies can accreete very quickly "out of thin air". 
+
+%   - classic picture, but the drift inwards for 1m is to. o much, no planets formed
+ 
+%Okuzumi et al., 2012; Kataoka et al., 2013
+   %- classic pciture still might work if beyond the snowline the the planets were way fluffier than expected - Rosseta mission kind of proved that by measuring very small packing coefficient
+   %- works because the radial velocities are very slow and they are very resistant to collisional disruption 
+   %- but doesn't work on the inside where the aggregate is not fluffy but silicon based in composition (they bounce off of each other more easily than coalesce)
+   %- so now a big ass migration mechanism is required - hard to do and doesn't make sense from composition side of things
+   
+%Cuzzi et al., 2001; Johansen et al., 2007
+ %  - if the disk were turbulent clumps of gas might form and settle in their self-gravitational potential well 
+   %- problems are that there has to be turbulence in the disk and the particles need to be larger than expected (at least in the inner disk)
+   %- 2 mechanisms proposed to solve this problem: Rayleigh-Helmholtz instability or the streaming-instability.
+   
+%Weidenschilling, 1995 
+ %  - particles cause a Rayleigh-Helmholtz instability themselves through sedimentation towards the midplane by forcing the gas to rotate faster
+  % - this again depends a lot on the particle size because, smaller particles don't sediment very fast and therefore don't create a dense midplane layer where conditions for KH instability can form
+   
+%Youdin and Goodman, 2005 
+ %  - streaming instability: In the proto-planetary nebula, hydrogen (gas) and dust (sub-cm sized fractals and ices) move at different speeds. Since the gas has a outwards pressure (friction), its speed is about 50 m/s lower than the Keplerian speed for that orbit. The dust, more massive and faster, plows through this gas and feels a headwind slowing it (friction). By reaction, the gas is pushed to accelerate (friction) with respect to the equilibrium speed given by its pressure. Random dust clusters increase the gas acceleration (more massive body colliding with a small gas molecule), decrease the friction on dust (more massive body feels less deceleration when colliding with small molecule). This slows the fall of the clump towards the center. 
+   %- Other particles drifting inward at the nominal speed catch up to the clump, enhance the local over-density of solids, and further decelerate the radial drift of the clump. Thus a positive-feedback loop is established and large bodies can accreete very quickly "out of thin air". 
+   
+
+%\section*{}
+
 
 \end{document}
