@@ -1,102 +1,267 @@
-\documentclass[12pt,letterpaper]{article}
-\usepackage{fullpage}
-\usepackage[top=2cm, bottom=4.5cm, left=2.5cm, right=2.5cm]{geometry}
-\usepackage{amsmath,amsthm,amsfonts,amssymb,amscd}
-\usepackage{lastpage}
-\usepackage{enumerate}
-\usepackage{fancyhdr}
-\usepackage{mathrsfs}
-\usepackage{xcolor}
-\usepackage{graphicx}
-\usepackage{listings}
-\usepackage{hyperref}
-
-\hypersetup{%
-  colorlinks=true,
-  linkcolor=blue,
-  linkbordercolor={0 0 1}
-}
+\documentclass[12pt]{article}
  
-\renewcommand\lstlistingname{Algorithm}
-\renewcommand\lstlistlistingname{Algorithms}
-\def\lstlistingautorefname{Alg.}
+\usepackage[margin=1in]{geometry} 
+\usepackage{amsmath,amsthm,amssymb}
+\usepackage{listings}
 
-\lstdefinestyle{Python}{
-    language        = Python,
-    frame           = lines, 
-    basicstyle      = \footnotesize,
-    keywordstyle    = \color{blue},
-    stringstyle     = \color{green},
-    commentstyle    = \color{red}\ttfamily
-}
+\usepackage{graphicx}
+\graphicspath{ {./images/} }
 
-\setlength{\parindent}{0.0in}
-\setlength{\parskip}{0.05in}
+\usepackage{natbib}
+\bibliographystyle{apalike}
 
-% Edit these as appropriate
-\newcommand\course{ASTR 597}
-\newcommand\hwnumber{2}                  % <-- homework number
-\newcommand\NetIDa{Dino}           % <-- NetID of person #1
-\newcommand\NetIDb{Bektesevic}           % <-- NetID of person #2 (Comment this line out for problem sets)
+\usepackage{epigraph}
+\setlength \epigraphwidth {\linewidth}
+\setlength \epigraphrule {0pt}
+\AtBeginDocument{\renewcommand {\epigraphflush}{center}}
+\renewcommand {\sourceflush} {center}
 
-\pagestyle{fancyplain}
-\headheight 35pt
-\lhead{\NetIDa}
-\lhead{\NetIDa\\\NetIDb}                 % <-- Comment this line out for problem sets (make sure you are person #1)
-\chead{\Large Summary of meter-barrier problem.}
-\rhead{\course \\ \today}
-\lfoot{}
-\cfoot{}
-\rfoot{\small\thepage}
-\headsep 1.5em
-
+\usepackage{hyperref}
+ 
 \begin{document}
-\textbf{Chosen papers on the topic}
+
+\title{The meter-barrier problem}
+\author{Dino Bektesevic \\ 
+Exoplanets - Final Project}
+\maketitle
+
+
+\epigraph{\centering The aerodynamic migration of small solids near the meter-size barrier imposes the most stringent timescale constraint on planet formation: $\approx$ 100 years. (This is rivaled only by thesis, job and grant deadlines!)}{\textit{Andrew N. Youdin \\ Les Houches lecture, 2008}}
+\newpage
+
+\section{Introduction}
+
+The origins and creation of the Solar System has always been a topic of interest in Astronomy. In broad strokes it was long understood that stars, and therefore the planetary systems around them, must form from the collapse of gas clouds. It was, also, long imagined that in this collapse the existing particles from withing the cloud would have to coalesce to form ever larger bodies from sub-micron dust to gas giants - a growth spur spanning 12, or more, orders of magnitude. \citet{Armitage07} offers an overview of different phases of this growth (quoted verbatim):
+
 \begin{itemize}
-    \item Aerodynamics of solid bodies in the solar nebula, Weidenschilling 1977, MNRAS
-    \item Rapid Coagulation of Porous Dust Aggregates outside the Snow Line: A Pathway to Succesful Icy Planetesimal Formation, Okuzumi et al., 2012, ApJ
-    \item Streaming Instabilities in Protoplanetary Disks, Youdin and Goodman 2005, ApJ
+    \item Dust - small particles ranging from sub-micron to cm in scale. These particles are well-coupled to the gas, but there can be slow drift either vertically or radially. Growth occurs through physical collisions leading to agglomeration.
+    \item "Rocks" - objects of meter scale. These particles have increasingly weak coupling to the gas, and so it can be useful to approximate their dynamics as being a combination of Keplerian orbits plus aerodynamic drag. Growth through this size regime is deduced to be rapid but the mechanism remains uncertain.
+    \item Planetesimals - bodies of kilometer scale and above. Planetesimals are massive enough that their dynamics are largely decoupled from that of the gas. A population of bodies of this size is often considered as the initial condition for subsequent stage of planet formation, since the evolution of such a population is a well-posed N-body problem involving primarily purely gravitational forces (though for smaller planetesimals, questions regarding the bodies material strength can also be pertinent). In the classical scenario for planet formation we ignore dust and rocks once planetesimals have formed, but in fact aerodynamically assisted accretion of small bodies may play a substantial role in protoplanetary growth.  This is “pebble accretion”.
+    \item Earth mass - planets or progenitors of the giant planet cores. Once growing planets reach masses of the order of that of Earth, they again become coupled to the gas disk, though this time via gravitational rather than aerodynamic interactions. For terrestrial planet formation it is possible that the formation of Earth mass bodies occurs after the gas disk has been dispersed (in which case this coupling is moot), but for growing giant planet cores it is inevitable that interaction will take place.
+    \item Planetary cores - cores with  masses  of  the  order  of 10 earth masses.  At around this mass, there is a transition from a quasi-hydrostatic core + envelope structure to a regime of rapid gas accretion.
 \end{itemize}
 
+It is not hard to see how, especially when spanning such a large range of condition and processes, developing a model of planetary evolution remains a hard problem with many facets that still remain unsolved. Considerable theoretical progress on protoplanetary disks and accretion processes were made in the late 1960's and 1970's despite the fact that the observational constraints were almost solely derived from Solar System observations. Incredible technological progress made in the last two decades have since then reinvigorated the discussion by providing us with better observational constraints on the processes. Missions like Deep Impact, Rosetta, Hayabusa 2 have provided or, in the case of Hayabusa 2, are yet to provide us with better measurements of physical properties of Solar System rocks and planetesimals. Observatories like ALMA that are capable of direct imaging of the protoplanetary disks give clues to the composition, shape and dynamics of environments in which planets form in details not possible ever before. We should not exclude the ability of exoplanets, of which thousands have been detected so far, to provide us with constraints on the composition and dynamics of subsequent evolution of Earth mass (and greater) objects. 
 
-\section*{Summary and motivation of the final project.}
+In this report I will focus on the transition period from dust to rocks. Specifically, I will focus on describing the, currently still unsolved, meter-barrier problem. This focus will be divided into three parts: I) defining and describing what the meter barrier problem is (section blag), II) modeling the growth through collisions of dust particles where I hope to present the issues related with collisional agglomeration (section blahblah) and III) possible ways these issues can be avoided by adopting the streaming instability model.
 
-The origins and creation of the Solar System has always been a topic of interest in Astronomy, reinvigorated in the last decade by missions like Deep Impact, Rosetta, Hayabusa 2 and the discovery of exoplanets. There are many different models describing the possible dynamics of the formation of a planetary system and all have had to deal with a similar underlying physical problem: the dynamics of dust in the protoplanetary disk. This dynamic has always been assumed rather simplistically, until recently at least, where planets formed by growth of orbiting dust via accretion, coagulation etc., offset by rates of fragmentation, destructive collisions and other negative-outcome scenarios in this context. Although quite logical and understandable these models have always faced several challenges - namely it is very difficult to coalesce dust, i.e. the rate of accretion is slow, i.e. the timescales at which planetesimals form are large.
+\section{The Meter-Barrier problem.}
 
-Plotoplanetary disks consist mainly of gas and dust particles. In the classical picture the gas orbits around the central body partially supported by the gas pressure while the dust tends to orbit more on Keplerian-like orbits. Because of this additional supporting force exerted by pressure, gas can orbit at a lower velocities compared to appropriate expected Keplerian orbit. Since dust therefore orbits with larger velocity than gas it "plows" through the gas which causes a loss of momentum and consequently a slow drift inwards. Weidenschilling (MNRAS, 1977) examined two cases for dust-gas interaction in protoplanetary disks: 1) when the dust cross-section is smaller than the mean free path of the gas, so called Epstein regime, and 2) when the dust cross-section is larger than the mean free path of the gas, so called Stokes regime. Weidenschilling found that there is a strong correlation between the drift-speed and the particle size. He found that smaller dust particles are more strongly coupled to the gas and tend to follow its behaviour while the large particles, having larger mass and therefore being less decelerated in collisions, tend to plow through the gas unaffected. For all the particles in-between those two limits however there exists a varying drift-speed towards the central body, provided they don't coalesce or fragment on their way there. Weidenschilling finds that the largest drift speed is recovered for particles ~1m in size. But if the accretion rates, at least in the classical approach, are slow and timescales required to form a planetesimal ~1m large, but we know 1m sized objects can only live for a short period in the protoplanetary due to their large drift-speeds, how do we coalesce bodies larger than that? Such bodies would then have to be formed very quickly, or there is something wrong with how we model successful collisions. Since we can physically test accretion in the lab it is likely the former. This is the origin of the meter-barrier problem I want to cover in my final project.
+As already implied, protoplanetary disks consist mainly of gas and dust particles. In the classical picture the gas orbits around the central body partially supported by the gas pressure while the dust tends to orbit on Keplerian-like orbits. Because of this additional supporting force exerted by pressure, gas can orbit at a lower velocities compared to appropriate expected Keplerian orbit. Since dust orbits with larger velocity than gas at a given radius, the dust feels a headwind caused by the slower orbiting gas. The resulting drag force, dependent on the relative velocities of the gas and dust and the size of dust particles, causes a loss of angular momentum and an inward drift of the dust particles. It is well established (\cite{Weidenschilling77}, \cite{Armitage07}, \cite{ChiangYoudin10}) that for meter sized objects the drift timescale, the characteristic time in which the particle would travel its current distance to the star, are on the order of 100 years. Meanwhile, the disk ages are estimated to lie in the ranges of $10^4$ to $10^6$ \citep{Weidenschilling77} and the planet forming timescales are estimated to be much larger than the drift timescales. This implies that agglomeration through certain ranges of object sizes must be incredibly quick as such objects can not exist in the disk for long. This problem is referred to as the "meter-barrier" problem. 
 
-Since the proposition of the problem by Weidenschilling, there have been numerous attempts to resolve the discrepancy. Okuzumi et al., (ApJ, 2012) propose a potential solution for the problem for particles beyond the snowline. They assumed a much "fluffier" composition, a lower form filing factor for the body. This enabled them to coalesce bodies above the meter-barrier for two reasons: 1) bodies with a lower form filling factor are more resistant to collisional disruption and therefore more likely to coalesce and 2) such bodies are formed by coalescing of icy material, meaning such bodies would form at larger radii from the central body where the orbital speeds are smaller leading to more successful. Such results have gained popularity after the Rosetta and Deep Impact missions both of which indicated that bodies of the Solar System might generally have a significantly smaller form filling factors than originally assumed. Unfortunately the proposed model is not able to describe how this mechanism would work for more tightly packed silicon based material closer to the central object.
+\subsection{Dynamics of dust and gas}
 
-Another approach involves setting up a fast accretion mechanism. Youdin and Goodman (ApJ, 2005) propose one such mechanism called streaming instability. Previously it was established that a common idea is that the gas moves at different velocity (~50m/s) than the dust particles, due to the fact gas is additionally supported by pressure, and that collisions between single dust particles and gas causes the dust to drift inwards. Instead of focusing on collisional outcomes of single dust particle and gas Youding and Goodman focused on collisional outcomes of gas and clumps of dust particles. Dust clusters increase the gas acceleration, since a more massive body colliding with a small gas molecule imparts a larger momentum onto the smaller particle, thus accelerating the orbital velocity of surrounding gas and decreasing the friction felt by the dust clump. The net result is that the drift speed of the clump is less than that of a single dust particle. Dust particles that continue to drift inwards at nominal speed catch up to the clump and increase its mass, further reducing its drift speed. Although described very corpuscularly above, these dust clumps need not be actual accreted and bound together clumps of dust particles (with respect to previous text: how would these have formed?) but local overdensities of solid matter that could have originated from some small local statistical fluctuation of density and is bound together by self-gravitational effects. 
+The original derivation, as made by \citet{Weidenschilling77}, is closely followed to derive the magnitude of the headwind experienced by the dust. Realizing that gas is additionally supported by pressure and is in hydrostatic equilibrium allows us to write the gas equation of motion:
+\begin{equation}
+    \label{eq:vecacc}
+    \frac{GM_{sol}}{r^3}\vec{r} - \frac{1}{\rho_g}\nabla P_g - \Omega^2\times\vec{r} = 0
+\end{equation}
 
-In this project I want to cover the meter-barrier problem in more details by examining both how planetesimal composition and structure affects the accretion rates and whether there are new ideas dictating how this would occur in the inner part of the system and also examining in more details what is the theory behind the streaming instability mechanism and what are the current obstacles the idea faces.
+\noindent where $-\frac{1}{\rho_g}\nabla P_g$ is the force due to gas pressure support and  $-\Omega\times\vec{r}$ the centripetal force, $\Omega$ being the angular frequency. In general for truly Keplerian, i.e. elliptical, orbits the angular frequency and radius vector are a function of time, or better to say function of orbital position. Assuming a circular orbit allows us to write $\Omega\times(\Omega\times r) = GM_{sol}/r^2 = v_K^2/r = g$ which simplifies the expression \ref{eq:vecacc}. Expressing the radial direction only:
+\begin{align}
+    \label{eq:radialacc}
+    \frac{GM_{sol}}{r^2} - \frac{1}{\rho_g}\frac{dP_g}{dr} - \frac{v_K^2}{r} &= 0 \\
+    g - \frac{1}{\rho_g}\frac{dP_g}{dr} - g_K &= 0
+\end{align}
+
+Defining residual gravity $\delta g \equiv g-g_K$ as the apparent gravitational acceleration with respect to that of an idealized circular Keplerian orbit nets us:
+\begin{equation}
+    \delta g = \frac{1}{\rho_g}\frac{dP_g}{dr}
+\end{equation}
+
+From the definition of the residual gravity we can also express the rotational velocity of the gas $v_g$ as:
+\begin{align}
+    \delta g &= g - g_K \\
+    \delta g &= \frac{V^2_g}{r} - \frac{V^2_K}{r}
+\end{align}
+
+\noindent leading, if $\delta g / g \ll 1$, to:
+\begin{equation}
+    \label{eq:dvdg}
+    \delta v \approx - \frac{\delta g}{2 g}v_K
+\end{equation}
+
+\noindent where $\delta v$ is the deviation of the gas velocity from the circular orbital velocity\footnote{See appendix A for comments}. This is an important connection as it encapsulates the main idea behind Weidenschilling's derivation. The gas can orbit at a lower velocity than the dust as its additionally supported by pressure. Dust "plows" through slower gas feeling a drag force proportional to $\delta v$. 
+
+What follows is the second part of Weidenschilling's derivation where he formulates how drag force removes the angular momenta from the dust particles causing them to spiral inwards. We begin by stating the general expression for drag force: 
+\begin{equation}
+    F_D = \frac{1}{2} \rho_g v^2 C_D A  
+\end{equation}
+
+\noindent where $C_D$ is the dimensionless drag coefficient, $A$ the cross sectional area of dust particle and $v$ the relative velocity of the dust particle and gas. \citet{Weidenschilling77} continues  by decomposing the velocity vector into its constituent parts. The velocity vector of a dust particle can be written as a sum of its radial and transverse velocities $\vec{v_d} = v_{d, r} + v_{d, \phi}$. The transverse velocity is then expressed relative to the gas velocity $v_{d, \phi} = v_g + w$ where $w$ is the transverse velocity of the dust relative to the gas. Assuming gas has no radial velocity, which is not a bad approximation considering we assumed hydrostatic equilibrium at the beginning, the headwind experienced by the dust particle is just its radial velocity component $v_{d, r}$ (denoted $u$ in the paper). The total wind velocity felt by the dust particle is $= (u^2+w^2)^{1/2}$. Balancing the forces in the radial direction gives us:
+\begin{equation}
+    \label{eq:forceeq1}
+    \frac{(v_g + w)^2}{r} + \frac{F_D u}{mv} - g = 0
+\end{equation}
+
+A dust particle orbiting in a protoplanetary disk at some distance r will have a specific angular momentum $l=(v_g + w)r$\footnote{The change in symbol to $l$ from $h$ in the paper is to avoid disk scale height confusion.}. torque1, the change of the angular momentum with time, can then be written as: 
+\begin{equation}
+    \label{eq:torque1} 
+    \frac{dl}{dt} = \frac{d}{dt} \left[ (v_g+w)r \right] = -r\frac{F_D w}{mv}
+\end{equation}
+
+\noindent where $\frac{F_D w}{v}$ is the transverse component of the drag force.
+
+From this point onward, I depart from tracing \citet{Weidenschilling77} derivation as closely as so far for three reasons: I) at least a minimal discussion of drag equations and approximate disk models would be required both of which, while informative, would be lengthy, in my case quite poorly informed, and out of scope of this report, II) it is possible to derive the qualitative behaviour of dust without having to justify choice of values, or functional forms, for many of the parameters (temperature, density, pressure, drag force etc.) by parameterizing the expressions over dimensionless quantities already introduced and III) for the expressions derived in \citet{Weidenschilling77} to be easily usable would require us to pick a drag law, solve for the velocity components, calculate the Reynolds number and if the calculated Reynolds number was not consistent with the picked drag law repeat the procedure until a self-consistent solution was found. Instead, drawing on other sourced cited liberally throughout this report, I parameterized the equations in terms of stopping time and approximated a single scenario, namely the one where $u$ and $w$ are small compared to the Keplerian velocity $v_K$. In this way none of the conclusions made by \citet{Weidenschilling77} are skipped, but much of the required additional discussion, and difficulty in solving equations \ref{eq:forceeq1} and \ref{eq:torque1}, are avoided.
+
+ We define, via dimensional analysis, the stopping time as the characteristic time required for any initial momentum to be lost solely due to friction caused by drag much like\citet{Weidenschilling77} does:
+\begin{equation}
+    t_{\mathrm{fric}} = -\frac{mv}{F_D} 
+\end{equation}
+
+It is quite common to express the stopping time in its nondimensional form: 
+\begin{equation}
+    \label{eq:nondimfric}
+    \tau_{\mathrm{fric}} = t_{\mathrm{fric}}\Omega_K
+\end{equation}
+
+Rewriting equations \ref{eq:forceeq1} and \ref{eq:torque1} in terms of $t_{\mathrm{fric}}$ (note also that this is essentially the equivalent of \ref{eq:radialacc} with an substitution IT SHOULD BE, BUT SUBS IS HARD TO SEE?!) :
+\begin{align}
+    \label{eq:}
+    \frac{(v_g+w)^2}{r} -& \frac{u}{t_{\mathrm{fric}}} - g = 0 \\
+    \frac{dl}{dt} = -&r\frac{w}{t_{\mathrm{fric}}}
+\end{align}
+
+By using the expressions from equation \ref{eq:torque1} again, this can be written as a system of equations:
+\begin{align}
+    \label{eq:forceeq2}
+    \frac{(v_g+w)^2}{r} - \frac{u}{t_{\mathrm{fric}}} - g &= 0 \\
+    \label{eq:torque2}
+    \frac{d}{dt}\left[(v_g+w)r\right] = -r\frac{w}{t_{\mathrm{fric}}}&
+\end{align}
+
+If we adopt the case when the total wind velocity felt by the particle $v$, $w$ and $u$ are all $\ll v_K$ we linearize the equations by ignoring all second order and mixed terms consisting of one or multiple small values. Starting with the $(v_g+w)^2$ we have:
+$$ (v_g+w)^2 = v_g^2 + 2v_gw + w^2 \approx v_g^2 + 2v_gw $$
+
+\noindent and for $\frac{dl}{dt}$, by stating $v_{d, \phi}=v_g+w \approx v_K$, keeping in mind that $v_K$ is also a function of radius, and applying the chain rule:
+$$\frac{dl}{dt} = \frac{drv_{d, \phi}}{dt} = \frac{drv_{d, \phi}}{dr}\frac{dr}{dt} = \frac{drv_{d, \phi}}{dr}u \approx u\frac{drv_K}{dr} \approx \frac{1}{2}uv_K$$ 
+
+There is one more dimensionless quantity we need to introduce in order to simplify the equations. The ratio of half of the force exerted by the pressure and the gravitational force (see appendix \ref{appendix:A} for motivation) denoted $\eta$ is given by the expression: 
+\begin{equation}
+   \label{eq:eta}
+    \eta \equiv -\frac{1}{2} \frac{1}{\rho_g \Omega^2 r } \frac{dP_g}{dr}
+\end{equation}
+
+Even though expression is not very intuitive its definition arises naturally whenever components of equation \ref{eq:vecacc} are being written out. Especially in more detailed calculations that include back-reaction of collisions that accelerate the gas as well as slow down the dust, such as the one made by \citet{Nakagawa86}\footnote{A definitive must read as it details many complex solutions to the equations of motions ignored here.}. Using the definition \ref{eq:eta} we can rewrite equation \ref{eq:dvdg} as\footnote{See appendix \ref{appendix:B}}: 
+\begin{align}
+    \delta v &= - \eta v_K \\
+    v_g &= (1-\eta)v_K
+\end{align}
+
+This allows us to make the following simplification in our linearization: 
+$$v_g^2 = (1-\eta)^2v_K^2 \approx (1-2\eta)v_K^2 $$
+
+Returning to equation \ref{eq:torque2} we write:
+\begin{align}
+    \frac{1}{2}uv_K &= -r\frac{w}{t_{\mathrm{fric}}} \\
+    \label{eq:transversewindvel}
+    w &= \frac{1}{2} \frac{t_{\mathrm{fric}} uv_K}{r}
+\end{align}
+\noindent and for equation \ref{eq:forceeq2}:
+\begin{align}
+    \frac{(v_g^2 +2v_gw)}{r} - \frac{u}{t_{\mathrm{fric}}} - g &= 0 \\
+    g_K - \frac{(2v_gw)}{r}  - \frac{u}{t_{\mathrm{fric}}} - g &= 0 \\
+    -\delta g - \frac{(2v_gw)}{r}  - \frac{u}{t_{\mathrm{fric}}} &= 0 \\
+    \label{eq:linearizedEOM}
+    -\eta \frac{v_K^2}{r} - \frac{(2v_gw)}{r}  - \frac{u}{t_{\mathrm{fric}}} &= 0 
+\end{align}
+
+Substituting the relative transverse wind velocity $w$ from equation \ref{eq:transversewindvel} into equation \ref{eq:linearizedEOM} and simplifying nets us:
+\begin{equation}
+   \label{eq:radialwindvel}
+    \frac{v_r}{v_K} = \frac{-\eta}{ \frac{v_K}{r}t_{\mathrm{fric}} + \frac{r}{v_K}t_{\mathrm{fric}}^{-1}}
+\end{equation}
+\noindent and \textbf{finally} substituting in the definition for nondimensional stopping time, equation \ref{eq:nondimfric} into equations \ref{eq:transversewindvel} and \ref{eq:radialwindvel} and simplifying again:
+\begin{align}
+    \label{eq:nondimradialwindvel}
+    u = -2\eta v_K \frac{\tau_{\mathrm{fric}}}{1 + \tau_{\mathrm{fric}}^2} \\
+    \label{eq:nondimtransversewindvel}
+    w = \eta v_K \frac{\tau_{\mathrm{fric}}^2}{1 + \tau_{\mathrm{fric}}^2}
+\end{align}
+
+We can quickly and easily verify that the linearized equations reproduce the qualitative behaviour expected from \cite{Weidenschilling77} by plotting the individual and total components of the relative wind velocities and comparing the figures. Qualitatively comparing figure \ref{fig:windvel} with figure 2 in \cite{Weidenschilling77} shows remarkable similarities indicating that the linearization procedure did not introduce any significantly different assumptions to the ones made in the paper.
+\begin{figure}[htbp]
+    \label{fig:windvel}
+    \centering
+    \includegraphics[width=0.5\linewidth]{windvel}
+    \caption{The transverse and radial wind velocities, $w$ and $u$ respectively, alongside with the total wind velocity experienced by a dust particle in a protoplanetary disk are plotted in the units of $\eta v_K$ against the dimensionless stopping time $\tau_\mathrm{fric}$ }
+    \label{fig:my_label}
+\end{figure}
+
+A quick derivation shows us that we expect the radial drift maximum to occur at $\tau=1$ meaning that the velocity with which the dust particle is moving in radial direction is at least on the order of $u=\eta v_K$. The value of $\eta$ depends on the selection of the protoplanetary model, as the model informs the functional form of the gas density $\rho_g$ (usually retrieved through a good fitting gas surface density expression) and pressure gradient $dP/dr$, but it is generally understood that for some local radius $r_0$ they are well approximated by a powerlaw: 
+$$P = P_0 \left(\frac{r}{r_0}\right)^{-n}$$
+\noindent where $n$ is generally picked to be positive, so that pressure, density etc. decrease outwards. Using such local powerlaw approximations and picking some numerical values it is possible to give an estimate of the magnitude of the radial wind velocity. \citet{Weidenschilling77} estimates a 100m/s for a 50cm large objects, \cite{Armitage07} and \cite{LesHouches} agree on a more conservative value of 60m/s and 56m/s respectively. As noted by all of them this implies decay times on the order 100-200 years. Figure \ref{fig:drifttimes}, taken from \cite{LesHouches} shows how in the interior, up to $\approx$ 10AU, meter sized objects consistently encounter almost the maximal radial wind velocities implying stopping time on the order of 50 to 10 000 years. This problem, previously explained qualitatively, where objects of certain sizes have incredibly characteristic life timescales  is the "meter-barrier" problem.
+\begin{figure}[htbp]
+    \label{fig:drifttimes}
+    \centering
+    \includegraphics[width=0.8\linewidth]{drifttimesnotxt.png}
+    \caption{(Left:) Particle radial drift timescale for several sizes vs. disk radius. The fastest migration at any radius is for a particle with $\tau_\mathrm{fric} = 1$ (grey curve). (Right:) Particle settling times, which are longer than the orbital time (grey curve), but shorter than the radial drift times.}
+    \label{fig:my_label}
+\end{figure}
+
+\section{Streaming instability}
+
+\epigraph{\centering Since these speeds are comparable to a sand-blaster (credit to Eugene Chiang for this analogy) it is difficult to imagine net growth.}{\textit{Andrew N. Youdin \\ Les Houches lecture, 2008}}
+\newpage
 
 
 
-% Weidenshilling 
-%   - classic picture, but the drift inwards for 1m is to. o much, no planets formed
+
+\newpage
+\appendix
+
+\section{Relating velocity deviation to residual gravity.}
+\label{appendix:A}
+
+This is not an obvious result and I am not sure how to recover it. The problem in recovering the expression lies foremost in the fact that there seems to be a better parameterization\footnote{On exact form of which nobody agrees either.} possible which has replaced this approach so this is not really visited again in another paper. What I believe was the procedure used by \citet{Weidenschilling77} is to derive the expression for uniform circular motion $v^2 = gr$:
+\begin{align}
+    \frac{d}{dr}v &= \frac{d}{dr}\sqrt{g(r)r} \\
+    v' &= \frac{r g'(r) + g(r))}{2 sqrt(r g(r))} \\
+    v' &= \frac{\sqrt{r} g'(r)}{2 \sqrt{g(r)}} + \frac{\sqrt{g(r)}}{2 \sqrt{r}} 
+\end{align}
+
+which, in the limit of small deviations and by approximating $g/r \ll 1$, becomes
+\begin{align}
+    \delta v &= \frac{\delta g}{2}\sqrt{\frac{r}{g}} + \frac{1}{2} \sqrt{\frac{g}{r}} \\
+    \delta v &= \frac{\delta g}{2} \sqrt{\frac{r}{g}} = \frac{v_K}{g}\frac{\delta g}{2} \\
+    \frac{\delta v }{v_K} &= \frac{\delta g}{2 g}
+\end{align}
+
+However, the exact reasoning is not crystal clear to me as the approximation $g/r \ll 1$ was never explicitly made by \citet{Weidenschilling77}, even though it is not baseless, who instead writes $\delta g/g \ll 1$ . \citet{LesHouches} does what is, perhaps, a more straightforward derivation of the link by defining the orbital velocity deviation in cylindrical coordinates as $\delta v_\phi \equiv v_\phi - v_K$ and by using the definition of circular velocity $v_K = \sqrt{GM_{sol}/r} = \Omega r$, to equate the pressure force, $-\frac{1}{\rho_g}\frac{dP_g}{dr}$, with the Coriolis force, $2\Omega\Delta v_\phi$:
+\begin{align}
+    \label{eq:simpledvdg}
+    f_{Corr} + f_P &= 0 \\
+    -\frac{1}{\rho_g}\frac{dP_g}{dr} + 2\Omega\delta v_\phi &= 0 \\
+    \delta v_\phi = \frac{1}{2\rho_g\Omega}\frac{dP_g}{dr} &= \frac{1}{2\Omega}\delta g
+\end{align}
+
+\noindent which is the same result as the one recovered by \citet{Weidenschilling77} since by dimensional analysis we see that $\Omega = g/v_K$.
+
+\section{Expressing velocity deviation to residual gravity over $\eta$}
+\label{appendix:B}
+
+Using the expression for circular Keplerian velocity $v_K = \Omega r$ and the definition of $\eta$ given by \ref{eq:eta} the relationship is immediately apparent from equation \ref{eq:simpledvdg}:
+\begin{align}
+    \delta v &= \frac{1}{2\Omega}\delta g \\
+    \delta v &= -\frac{1}{2\Omega}\frac{1}{\rho_g}\frac{dP_g}{dr} \\
+    \delta v &= -\frac{1}{2\Omega^2r}\frac{1}{\rho_g}\frac{dP_g}{dr} v_K \\
+    \delta v &= - \eta v_K
+\end{align}
+
+\noindent from which it is also obvious that from the definition $\delta v = v-v_K$ follows
+\begin{equation}
+    v = (1-\eta)v_K
+\end{equation}
+
+Keeping the expression $g=\Omega^2 r$ in mind we can naturally, since they are equivalent, recover the same expression from \ref{eq:dvdg} as well: 
+\begin{align}
+    \delta v &= \frac{\delta g}{2 g} v_K \\
+    \delta v &= \frac{\delta g}{2 \Omega^2 r} v_K \\
+    \dots& \nonumber
+\end{align}
+
+
+\bibliography{references}
+
  
-%Okuzumi et al., 2012; Kataoka et al., 2013
-   %- classic pciture still might work if beyond the snowline the the planets were way fluffier than expected - Rosseta mission kind of proved that by measuring very small packing coefficient
-   %- works because the radial velocities are very slow and they are very resistant to collisional disruption 
-   %- but doesn't work on the inside where the aggregate is not fluffy but silicon based in composition (they bounce off of each other more easily than coalesce)
-   %- so now a big ass migration mechanism is required - hard to do and doesn't make sense from composition side of things
-   
-%Cuzzi et al., 2001; Johansen et al., 2007
- %  - if the disk were turbulent clumps of gas might form and settle in their self-gravitational potential well 
-   %- problems are that there has to be turbulence in the disk and the particles need to be larger than expected (at least in the inner disk)
-   %- 2 mechanisms proposed to solve this problem: Rayleigh-Helmholtz instability or the streaming-instability.
-   
-%Weidenschilling, 1995 
- %  - particles cause a Rayleigh-Helmholtz instability themselves through sedimentation towards the midplane by forcing the gas to rotate faster
-  % - this again depends a lot on the particle size because, smaller particles don't sediment very fast and therefore don't create a dense midplane layer where conditions for KH instability can form
-   
-%Youdin and Goodman, 2005 
- %  - streaming instability: In the proto-planetary nebula, hydrogen (gas) and dust (sub-cm sized fractals and ices) move at different speeds. Since the gas has a outwards pressure (friction), its speed is about 50 m/s lower than the Keplerian speed for that orbit. The dust, more massive and faster, plows through this gas and feels a headwind slowing it (friction). By reaction, the gas is pushed to accelerate (friction) with respect to the equilibrium speed given by its pressure. Random dust clusters increase the gas acceleration (more massive body colliding with a small gas molecule), decrease the friction on dust (more massive body feels less deceleration when colliding with small molecule). This slows the fall of the clump towards the center. 
-   %- Other particles drifting inward at the nominal speed catch up to the clump, enhance the local over-density of solids, and further decelerate the radial drift of the clump. Thus a positive-feedback loop is established and large bodies can accreete very quickly "out of thin air". 
-   
-
-%\section*{}
-
-
 \end{document}
